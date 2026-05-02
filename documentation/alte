@@ -1,0 +1,30 @@
+import pcbnew
+board = pcbnew.GetBoard()
+
+def antena_berserk():
+    # Posición inicial (ajusta si cae fuera de la placa)
+    x_pcb, y_pcb = 130, 40 
+    w, h = 50.0, 40.0
+    vueltas = 6
+    ancho, espacio = 0.25, 0.20
+    paso = ancho + espacio
+
+    for i in range(vueltas):
+        # Esquinas del rectángulo actual
+        x1, y1 = x_pcb + (i * paso), y_pcb + (i * paso)
+        x2, y2 = x1 + w - (2 * i * paso), y1 + h - (2 * i * paso)
+        
+        # Crear los 4 segmentos
+        puntos = [(x1, y1, x2, y1), (x2, y1, x2, y2), (x2, y2, x1 + paso, y2), (x1 + paso, y2, x1 + paso, y1 + paso)]
+        for p in puntos:
+            seg = pcbnew.PCB_TRACK(board)
+            seg.SetStart(pcbnew.VECTOR2I_MM(p[0], p[1]))
+            seg.SetEnd(pcbnew.VECTOR2I_MM(p[2], p[3]))
+            seg.SetWidth(pcbnew.ScaleMmToInternalUnits(ancho))
+            seg.SetLayer(pcbnew.F_Cu)
+            board.Add(seg)
+
+    pcbnew.Refresh()
+    print("¡Antena Rectangular Lista!")
+
+antena_berserk()

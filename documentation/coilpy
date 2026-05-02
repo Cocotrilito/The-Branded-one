@@ -1,0 +1,42 @@
+import pcbnew
+
+# Configuración de la antena
+START_X, START_Y = 100, 100  # Coordenadas donde empezará (puedes moverla luego)
+WIDTH = 50.0
+HEIGHT = 40.0
+TURNS = 6
+TRACK_W = 0.25
+SPACING = 0.20
+STEP = TRACK_W + SPACING
+
+board = pcbnew.GetBoard()
+
+def draw_segment(x1, y1, x2, y2):
+    seg = pcbnew.PCB_TRACK(board)
+    seg.SetStart(pcbnew.VECTOR2I_MM(x1, y1))
+    seg.SetEnd(pcbnew.VECTOR2I_MM(x2, y2))
+    seg.SetWidth(pcbnew.ScaleMmToInternalUnits(TRACK_W))
+    seg.SetLayer(pcbnew.F_Cu)
+    board.Add(seg)
+
+x, y = START_X, START_Y
+w, h = WIDTH, HEIGHT
+
+for i in range(TURNS):
+    # Dibuja los 4 lados de cada vuelta
+    draw_segment(x, y, x + w, y)             # Top
+    draw_segment(x + w, y, x + w, y + h)     # Right
+    draw_segment(x + w, y + h, x + STEP, y + h) # Bottom (deja espacio para entrar)
+    
+    # Actualiza para la siguiente vuelta (hacia adentro)
+    x += STEP
+    y += STEP
+    w -= (STEP * 2)
+    h -= (STEP * 2)
+    
+    # Conecta con la siguiente vuelta
+    draw_segment(x, y + h + STEP, x, y) 
+
+pcbnew.Refresh()
+print("Antena generada con éxito")
+
