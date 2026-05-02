@@ -1,0 +1,6 @@
+Id,Designator,Footprint,Quantity,Comment,Supplier and ref
+1,C1,C_0603_1608Metric,1,100nF,
+2,D1,LED_0603_1608Metric,1,LED,
+3,R1,R_0603_1608Metric,1,220,
+4,TP1,TestPoint_Pad_D1.0mm,1,TestPoint,
+5,U1,QFN8P50_160X160X50L40X20N,1,NT3H2111W0FHKH,
